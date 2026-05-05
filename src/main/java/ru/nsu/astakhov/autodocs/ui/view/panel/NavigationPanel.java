@@ -60,6 +60,7 @@ public class NavigationPanel extends Panel {
                 createButton(ButtonCommand.CREATE_APPLICATION_TEMPLATE.getName()),
                 createSeparator(),
                 createButton(ButtonCommand.GENERATE_DOCUMENT.getName()),
+                createButton(ButtonCommand.GENERATE_PROTOCOL.getName()),
                 Box.createVerticalGlue(),
                 createLogoLabel()
         ));

@@ -16,7 +16,8 @@ public enum ButtonCommand {
     SELECT_ALL("Выбрать всех"),
     REMOVE_ALL("Убрать всех"),
     GENERATE_ALL("Сгенерировать всех"),
-    GENERATE_SELECTED("Сгенерировать выбранных");
+    GENERATE_SELECTED("Сгенерировать выбранных"),
+    GENERATE_PROTOCOL("Сгенерировать протокол");
 
     private final String name;
 

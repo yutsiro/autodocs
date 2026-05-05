@@ -7,6 +7,7 @@ import ru.nsu.astakhov.autodocs.ui.view.panel.GeneratorPanel;
 import ru.nsu.astakhov.autodocs.ui.view.panel.HelpPanel;
 import ru.nsu.astakhov.autodocs.ui.view.panel.NavigationPanel;
 import ru.nsu.astakhov.autodocs.ui.view.panel.WarningsPanel;
+import ru.nsu.astakhov.autodocs.ui.view.panel.ProtocolGeneratorPanel;
 
 import javax.swing.JOptionPane;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ public class NavigationPanelEventHandler implements EventHandler {
             case WARNING_TABLE                  -> controller.setPanel(WarningsPanel.class);
             case GENERATE_DOCUMENT              -> controller.setPanel(GeneratorPanel.class);
             case SHORT_GUIDE                    -> controller.setPanel(HelpPanel.class);
+            case GENERATE_PROTOCOL              -> controller.setPanel(ProtocolGeneratorPanel.class);
         }
     }
 }

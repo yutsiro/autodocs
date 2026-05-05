@@ -25,7 +25,8 @@ public class PanelManager {
                 || panel instanceof PlaceholderPanel
                 || panel instanceof GeneratorPanel
                 || panel instanceof StudentListPanel
-                || panel instanceof HelpPanel) {
+                || panel instanceof HelpPanel
+                || panel instanceof ProtocolGeneratorPanel) {
             setCenterPanel(panel);
         }
         else if (panel instanceof NavigationPanel) {

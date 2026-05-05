@@ -1,0 +1,212 @@
+{
+  "questions" : [ {
+    "code" : "1",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 3,
+    "semester" : 5,
+    "educationalProfile" : "Программная инженерия и компьютерные науки",
+    "educationalProfileShort" : "ПИиКН",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Учебная практика, научно-исследовательская работа (получение первичных навыков научно-исследовательской работы)",
+    "practiceTypeGenitive" : "учебной практики (научно-исследовательской работы (получения первичных навыков научно-исследовательской работы))",
+    "sheetNumber" : 4
+  }, {
+    "code" : "2",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 3,
+    "semester" : 6,
+    "educationalProfile" : "Программная инженерия и компьютерные науки",
+    "educationalProfileShort" : "ПИиКН",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Учебная практика (эксплуатационная практика)",
+    "practiceTypeGenitive" : "учебной практики (эксплуатационной практики)",
+    "sheetNumber" : 4
+  }, {
+    "code" : "3",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 4,
+    "semester" : 7,
+    "educationalProfile" : "Программная инженерия и компьютерные науки",
+    "educationalProfileShort" : "ПИиКН",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 5
+  }, {
+    "code" : "4",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 4,
+    "semester" : 8,
+    "educationalProfile" : "Программная инженерия и компьютерные науки",
+    "educationalProfileShort" : "ПИиКН",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Производственная практика (преддипломная практика)",
+    "practiceTypeGenitive" : "производственной практики (преддипломной практики)",
+    "sheetNumber" : 5
+  }, {
+    "code" : "5",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 4,
+    "semester" : 7,
+    "educationalProfile" : "Компьютерные науки и системотехника",
+    "educationalProfileShort" : "КНиС",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Учебная практика (ознакомительная практика)",
+    "practiceTypeGenitive" : "учебной практики (ознакомительной практики)",
+    "sheetNumber" : 5
+  }, {
+    "code" : "6",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 4,
+    "semester" : 8,
+    "educationalProfile" : "Компьютерные науки и системотехника",
+    "educationalProfileShort" : "КНиС",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Производственная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "производственной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 5
+  }, {
+    "code" : "7",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 4,
+    "semester" : 8,
+    "educationalProfile" : "Компьютерные науки и системотехника",
+    "educationalProfileShort" : "КНиС",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 5
+  }, {
+    "code" : "8",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 1,
+    "educationalProfile" : "Технология разработки программных систем",
+    "educationalProfileShort" : "ТРПС",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Учебная практика (ознакомительная практика)",
+    "practiceTypeGenitive" : "учебной практики (ознакомительной практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "9",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 2,
+    "educationalProfile" : "Технология разработки программных систем",
+    "educationalProfileShort" : "ТРПС",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Учебная практика (ознакомительная практика)",
+    "practiceTypeGenitive" : "учебной практики (ознакомительной практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "10",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 3,
+    "educationalProfile" : "Технология разработки программных систем",
+    "educationalProfileShort" : "ТРПС",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "производственной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 7
+  }, {
+    "code" : "11",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 4,
+    "educationalProfile" : "Технология разработки программных систем",
+    "educationalProfileShort" : "ТРПС",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 7
+  }, {
+    "code" : "12",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 1,
+    "educationalProfile" : "Искусственный интеллект и Data Science",
+    "educationalProfileShort" : "ИИиDS",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Учебная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "учебной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "13",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 2,
+    "educationalProfile" : "Искусственный интеллект и Data Science",
+    "educationalProfileShort" : "ИИиDS",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Учебная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "учебной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "14",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 3,
+    "educationalProfile" : "Искусственный интеллект и Data Science",
+    "educationalProfileShort" : "ИИиDS",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "производственной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 7
+  }, {
+    "code" : "15",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 4,
+    "educationalProfile" : "Искусственный интеллект и Data Science",
+    "educationalProfileShort" : "ИИиDS",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 7
+  }, {
+    "code" : "16",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 1,
+    "educationalProfile" : "Интернет вещей",
+    "educationalProfileShort" : "IoT",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Учебная практика (ознакомительная практика)",
+    "practiceTypeGenitive" : "учебной практики (ознакомительной практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "17",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 1,
+    "semester" : 2,
+    "educationalProfile" : "Интернет вещей",
+    "educationalProfileShort" : "IoT",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (технологическая (проектно-технологическая) практика)",
+    "practiceTypeGenitive" : "производственной практики (технологической (проектно-технологической) практики)",
+    "sheetNumber" : 6
+  }, {
+    "code" : "18",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 3,
+    "educationalProfile" : "Интернет вещей",
+    "educationalProfileShort" : "IoT",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 7
+  }, {
+    "code" : "19",
+    "type" : "PRACTICE_EVALUATION",
+    "course" : 2,
+    "semester" : 4,
+    "educationalProfile" : "Интернет вещей",
+    "educationalProfileShort" : "IoT",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
+    "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
+    "sheetNumber" : 7
+  }]
+}
