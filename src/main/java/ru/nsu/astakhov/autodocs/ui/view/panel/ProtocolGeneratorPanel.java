@@ -407,6 +407,9 @@ public class ProtocolGeneratorPanel extends Panel {
                     try {
                         String outputDirectory = appSettings.getProtocolOutputPath();
                         String templatePath = appSettings.getDefaultTemplatePath();
+
+                        appSettings.setLastProtocolNumberIfValid(previewData.protocolData.getProtocolNumber());
+
                         protocolService.generateFinalProtocol(outputDirectory, templatePath);
 
                         JOptionPane.showMessageDialog(ProtocolGeneratorPanel.this,

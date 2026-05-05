@@ -100,6 +100,16 @@ public class AppSettings {
         saveSettings();
     }
 
+    public void setLastProtocolNumberIfValid(String protocolNumber) {
+        if (isValidProtocolNumberFormat(protocolNumber)) {
+            this.lastProtocolNumber = protocolNumber;
+            saveSettings();
+            System.out.println("Номер протокола сохранён: " + protocolNumber);
+        } else {
+            System.out.println("Номер протокола не соответствует формату ГГ-ХХ, пропускаем сохранение: " + protocolNumber);
+        }
+    }
+
     public void incrementProtocolNumber() {
         String[] parts = lastProtocolNumber.split("-");
         int currentYear = Integer.parseInt(parts[0]);
@@ -116,6 +126,22 @@ public class AppSettings {
 
         this.lastProtocolNumber = currentYear + "-" + currentNumber;
         saveSettings();
+    }
+
+    public boolean isValidProtocolNumberFormat(String protocolNumber) {
+        if (protocolNumber == null || protocolNumber.isEmpty()) {
+            return false;
+        }
+
+        if (!protocolNumber.matches("\\d{2}-\\d+")) {
+            return false;
+        }
+
+        String[] parts = protocolNumber.split("-");
+        int yearFromNumber = Integer.parseInt(parts[0]);
+        int currentYear = java.time.Year.now().getValue() % 100;
+
+        return yearFromNumber == currentYear;
     }
 
     public String getChairmanFullName() { return chairmanFullName; }
