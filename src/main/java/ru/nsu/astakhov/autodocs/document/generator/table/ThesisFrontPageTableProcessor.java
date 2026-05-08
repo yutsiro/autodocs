@@ -1,5 +1,6 @@
 package ru.nsu.astakhov.autodocs.document.generator.table;
 
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -25,7 +26,9 @@ public class ThesisFrontPageTableProcessor extends TableProcessor {
         if (isColored) {
             run.setTextHighlightColor("yellow");
         }
-        removeIndentation(run);
+        XWPFParagraph paragraph = (XWPFParagraph) run.getParent();
+        // 1 см ≈ 567 twips
+        paragraph.setIndentationFirstLine(567);
 
         return run;
     }

@@ -89,15 +89,18 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
             entry("рецензент", StudentDto::reviewer),
             entry("видпрактики", tempDto -> tempDto.internshipType().getValue()),
             entry("руководительвкр.имя", tempDto -> tempDto.thesisSupervisor().name()),
+            entry("руководительвкр.работангу", tempDto -> tempDto.thesisSupervisor().job()),
             entry("руководительвкр.должность", tempDto -> tempDto.thesisSupervisor().position()),
             entry("руководительвкр.степень", tempDto -> tempDto.thesisSupervisor().degree()),
             entry("руководительвкр.звание", tempDto -> tempDto.thesisSupervisor().title()),
             entry("полноеимяорганизации", StudentDto::fullOrganizationName),
             entry("руководительнгу.имя", tempDto -> tempDto.NSUSupervisor().name()),
+            entry("руководительнгу.работа", tempDto -> tempDto.NSUSupervisor().job()),
             entry("руководительнгу.должность", tempDto -> tempDto.NSUSupervisor().position()),
             entry("руководительнгу.степень", tempDto -> tempDto.NSUSupervisor().degree()),
             entry("руководительнгу.звание", tempDto -> tempDto.NSUSupervisor().title()),
             entry("руководительорганизации.имя", tempDto -> tempDto.organizationSupervisor().name()),
+            entry("руководительорганизации.работа", tempDto -> tempDto.organizationSupervisor().job()),
             entry("руководительорганизации.должность", tempDto -> tempDto.organizationSupervisor().position()),
             entry("руководительорганизации.степень", tempDto -> tempDto.organizationSupervisor().degree()),
             entry("руководительорганизации.звание", tempDto -> tempDto.organizationSupervisor().title()),
@@ -107,8 +110,7 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
             entry("датавыдачизаданияпрактики", StudentDto::dateOfPracticeAssignment),
             entry("соруководительвкр.степень", StudentDto::thesisCoSupervisorDegree),
             entry("соруководительвкр.звание", StudentDto::thesisCoSupervisorTitle),
-            entry("соруководительвкр.должность.работангу", StudentDto::thesisCoSupervisorPositionAndJob),
-            entry("руководительвкр.работангу", StudentDto::thesisSupervisorJob)
+            entry("соруководительвкр.должность.работангу", StudentDto::thesisCoSupervisorPositionAndJob)
     );
 
     private static final Map<String, BiFunction<StudentDto, RussianWordDecliner, String>> ADDITIONAL_RESOLVERS = Map.ofEntries(
@@ -378,7 +380,7 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
         // TODO: пометить плейсхолдеры в документах "заявление на практику" жёлтым
         // TODO: исправить уведомление "разрешение конфликтов" при генерации. Оно не исчезает
         if (value == null) {
-            throw new IllegalStateException("Value is empty: " + key + ":" + studentDto.fullName() + ":" + studentDto.thesisSupervisorJob());
+            throw new IllegalStateException("Value is empty: " + key + ":" + studentDto.fullName());
         }
         if (!value.isBlank()) {
             run.setTextHighlightColor("white");
@@ -405,7 +407,8 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
                 || normalizedKey.equals("рецензент");
 
         if (normalizedKey.equals("руководительвкр.звание") && value.isBlank()
-        || normalizedKey.equals("рецензент") && value.isBlank()) {
+        || normalizedKey.equals("рецензент") && value.isBlank()
+        || normalizedKey.equals("руководительвкр.степень") && value.isBlank()) {
             value = " ";
         }
 

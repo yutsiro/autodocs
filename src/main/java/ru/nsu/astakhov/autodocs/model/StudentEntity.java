@@ -78,6 +78,7 @@ public class StudentEntity {
 
     @Embedded
     @AttributeOverride(name = "name", column = @Column(name = "thesis_supervisor_name"))
+    @AttributeOverride(name = "job", column = @Column(name = "thesis_supervisor_job"))
     @AttributeOverride(name = "position", column = @Column(name = "thesis_supervisor_position"))
     @AttributeOverride(name = "degree", column = @Column(name = "thesis_supervisor_degree"))
     @AttributeOverride(name = "title", column = @Column(name = "thesis_supervisor_title"))
@@ -87,6 +88,7 @@ public class StudentEntity {
 
     @Embedded
     @AttributeOverride(name = "name", column = @Column(name = "nsu_supervisor_name"))
+    @AttributeOverride(name = "job", column = @Column(name = "nsu_supervisor_job"))
     @AttributeOverride(name = "position", column = @Column(name = "nsu_supervisor_position"))
     @AttributeOverride(name = "degree", column = @Column(name = "nsu_supervisor_degree"))
     @AttributeOverride(name = "title", column = @Column(name = "nsu_supervisor_title"))
@@ -94,6 +96,7 @@ public class StudentEntity {
 
     @Embedded
     @AttributeOverride(name = "name", column = @Column(name = "organization_supervisor_name"))
+    @AttributeOverride(name = "job", column = @Column(name = "organization_supervisor_job"))
     @AttributeOverride(name = "position", column = @Column(name = "organization_supervisor_position"))
     @AttributeOverride(name = "degree", column = @Column(name = "organization_supervisor_degree"))
     @AttributeOverride(name = "title", column = @Column(name = "organization_supervisor_title"))
@@ -112,9 +115,6 @@ public class StudentEntity {
     private String thesisCoSupervisorTitle; // Звание соруководителя ВКР
 
     private String thesisCoSupervisorPositionAndJob; // Должность соруководителя ВКР, место работы
-
-    private String thesisSupervisorJob; // Место работы руководителя ВКР
-
 
     public void setEduProgram(String value) {
         EduProgram newEduProgram = EduProgram.fromValue(value);

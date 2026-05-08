@@ -190,6 +190,7 @@ public class StudentService {
 
     private void checkInternshipSupervisor(Supervisor supervisor, String studentName) {
         notifyIfStringFieldMissing(WorkType.INTERNSHIP, studentName, supervisor.name(), "имя руководителя");
+        notifyIfStringFieldMissing(WorkType.INTERNSHIP, studentName, supervisor.job(), "место работы руководителя");
         notifyIfStringFieldMissing(WorkType.INTERNSHIP, studentName, supervisor.position(), "должность руководителя");
         notifyIfStringFieldMissing(WorkType.INTERNSHIP, studentName, supervisor.degree(), "учёная степень руководителя");
         notifyIfStringFieldMissing(WorkType.INTERNSHIP, studentName, supervisor.title(), "учёное звание руководителя");
@@ -300,7 +301,6 @@ public class StudentService {
         entity.setThesisCoSupervisorDegree(dto.thesisCoSupervisorDegree());
         entity.setThesisCoSupervisorTitle(dto.thesisCoSupervisorTitle());
         entity.setThesisCoSupervisorPositionAndJob(dto.thesisCoSupervisorPositionAndJob());
-        entity.setThesisSupervisorJob(dto.thesisSupervisorJob());
     }
 
     private boolean isNullOrBlank(String field) {

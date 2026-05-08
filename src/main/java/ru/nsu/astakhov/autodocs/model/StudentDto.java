@@ -32,7 +32,6 @@ public record StudentDto(
         String dateOfPracticeAssignment,
         String thesisCoSupervisorDegree,
         String thesisCoSupervisorTitle,
-        String thesisCoSupervisorPositionAndJob,
-        String thesisSupervisorJob
+        String thesisCoSupervisorPositionAndJob
 ) {
 }

@@ -46,7 +46,6 @@ public final class StudentMapper {
                 .thesisCoSupervisorDegree(entity.getThesisCoSupervisorDegree())
                 .thesisCoSupervisorTitle(entity.getThesisCoSupervisorTitle())
                 .thesisCoSupervisorPositionAndJob(entity.getThesisCoSupervisorPositionAndJob())
-                .thesisSupervisorJob(entity.getThesisSupervisorJob())
                 .build();
     }
 
@@ -86,7 +85,6 @@ public final class StudentMapper {
                 .thesisCoSupervisorDegree(dto.thesisCoSupervisorDegree())
                 .thesisCoSupervisorTitle(dto.thesisCoSupervisorTitle())
                 .thesisCoSupervisorPositionAndJob(dto.thesisCoSupervisorPositionAndJob())
-                .thesisSupervisorJob(dto.thesisSupervisorJob())
                 .build();
     }
 }

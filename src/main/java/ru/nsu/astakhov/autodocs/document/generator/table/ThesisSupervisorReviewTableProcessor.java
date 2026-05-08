@@ -1,5 +1,7 @@
 package ru.nsu.astakhov.autodocs.document.generator.table;
 
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.apache.poi.xwpf.usermodel.XWPFTable;
 import org.apache.poi.xwpf.usermodel.XWPFTableCell;
@@ -24,8 +26,8 @@ public class ThesisSupervisorReviewTableProcessor extends TableProcessor {
         this.table = table;
 
         addRow("Соруководитель", false, "", false);
-        addRow("$(соруководительВКР.имя)", true, "________________________", false);
-        addRow("$(соруководительвкр.должность.работангу)", true, "                       подпись", false);
+        addRow("$(соруководительВКР.имя)", true, "_____________", false);
+        addRow("$(соруководительвкр.должность.работангу)", true, "                подпись", false);
         // TODO: убрать явную дату
         addRow("«31» мая 2026 г.", false, "", false);
     }
@@ -40,7 +42,7 @@ public class ThesisSupervisorReviewTableProcessor extends TableProcessor {
 
     private void addCell(XWPFTableRow row, String text, boolean isColored, int fontSize) {
         // TODO: ну это пиздец :D
-        if (text.equals("                       подпись")) {
+        if (text.equals("                подпись")) {
             fontSize = 8;
         }
 
@@ -60,12 +62,20 @@ public class ThesisSupervisorReviewTableProcessor extends TableProcessor {
 
         XWPFTableRow coreRow = table.createRow();
         removeAllCells(coreRow);
+
         XWPFTableCell coreCell = coreRow.createCell();
         setCellBorders(coreCell);
+        XWPFRun run = addTextInCell(coreCell, coreCompetence);
+        removeIndentation(run);
+        run.setBold(true);
+
         XWPFTableCell coreCell2 = coreRow.createCell();
         setCellBorders(coreCell2);
-        XWPFRun run = addTextInCell(coreCell, coreCompetence);
-        run.setBold(true);
+        XWPFRun run2 = addTextInCell(coreCell2, "5");
+        removeIndentation(run2);
+        run2.setTextHighlightColor("yellow");
+        XWPFParagraph paragraph = (XWPFParagraph) run2.getParent();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
 
         CTTc cttCell1 = coreCell2.getCTTc();
         CTTcPr tcPr1 = cttCell1.isSetTcPr() ? cttCell1.getTcPr() : cttCell1.addNewTcPr();

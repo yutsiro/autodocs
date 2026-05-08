@@ -38,6 +38,11 @@ public class ThesisCalendarScheduleTableProcessor extends TableProcessor {
         if (!topic.getSecond()) {
             addTextInCell(cell3, "-");
         }
+        else {
+            XWPFRun dateRun = addTextInCell(cell3, "ДД.ММ.ГГГГ");
+            dateRun.setTextHighlightColor("yellow");
+            removeIndentation(dateRun);
+        }
         setCellBorders(cell3);
 
         XWPFTableCell cell4 = row.createCell();

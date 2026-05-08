@@ -44,6 +44,7 @@ public class InternshipStrategy implements SheetStrategy {
                     .internshipType(InternshipType.fromValue(readCellAsString(row, INTERNSHIP_TYPE.getColumnNumber())))
                     .thesisSupervisor(new Supervisor(
                             readCellAsString(row, THESIS_SUPERVISOR_NAME.getColumnNumber()),
+                            readCellAsString(row, THESIS_SUPERVISOR_JOB.getColumnNumber()),
                             readCellAsString(row, THESIS_SUPERVISOR_POSITION.getColumnNumber()),
                             readCellAsString(row, THESIS_SUPERVISOR_DEGREE.getColumnNumber()),
                             readCellAsString(row, THESIS_SUPERVISOR_TITLE.getColumnNumber())
@@ -51,12 +52,14 @@ public class InternshipStrategy implements SheetStrategy {
                     .fullOrganizationName(readCellAsString(row, FULL_ORGANIZATION_NAME.getColumnNumber()))
                     .NSUSupervisor(new Supervisor(
                             readCellAsString(row, NSU_SUPERVISOR_NAME.getColumnNumber()),
+                            readCellAsString(row, NSU_SUPERVISOR_JOB.getColumnNumber()),
                             readCellAsString(row, NSU_SUPERVISOR_POSITION.getColumnNumber()),
                             readCellAsString(row, NSU_SUPERVISOR_DEGREE.getColumnNumber()),
                             readCellAsString(row, NSU_SUPERVISOR_TITLE.getColumnNumber())
                     ))
                     .organizationSupervisor(new Supervisor(
                             readCellAsString(row, ORGANIZATION_SUPERVISOR_NAME.getColumnNumber()),
+                            readCellAsString(row, ORGANIZATION_SUPERVISOR_JOB.getColumnNumber()),
                             readCellAsString(row, ORGANIZATION_SUPERVISOR_POSITION.getColumnNumber()),
                             readCellAsString(row, ORGANIZATION_SUPERVISOR_DEGREE.getColumnNumber()),
                             readCellAsString(row, ORGANIZATION_SUPERVISOR_TITLE.getColumnNumber())
