@@ -43,5 +43,5 @@ build/
 /template
 /document
 /scripts
-/testdata/generatedprotocols/*
 /testdata/main-table.xlsx
+/out/
