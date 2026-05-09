@@ -35,6 +35,8 @@ public class ProtocolGenerator {
 
             replaceTextPlaceholders(document, values);
 
+            replaceAttendeesPlaceholder(document, protocolData.getAttendees());
+
             replacePlaceholderWithNumberedList(document, "{{AGENDA_ITEMS}}",
                     protocolData.getAllAgendaItems());
 
@@ -134,61 +136,61 @@ public class ProtocolGenerator {
         table.setWidth("100%");
 
         XWPFTableRow headerRow = table.getRow(0);
-        if (headerRow == null) {
-            headerRow = table.createRow();
-        }
+        if (headerRow == null) headerRow = table.createRow();
 
-        while (headerRow.getTableCells().size() < 5) {
+        while (headerRow.getTableCells().size() < 6) {
             headerRow.addNewTableCell();
         }
 
-        XWPFTableCell cell0 = headerRow.getCell(0);
-        cell0.setText("ФИО студента");
-        setCellTextCenterAndBold(cell0);
-
-        XWPFTableCell cell1 = headerRow.getCell(1);
-        cell1.setText("Курс, группа");
-        setCellTextCenterAndBold(cell1);
-
-        XWPFTableCell cell2 = headerRow.getCell(2);
-        cell2.setText("Название организации, структурного подразделения (номер кабинета)");
-        setCellTextCenterAndBold(cell2);
-
-        XWPFTableCell cell3 = headerRow.getCell(3);
-        cell3.setText("Руководитель от НГУ");
-        setCellTextCenterAndBold(cell3);
-
-        XWPFTableCell cell4 = headerRow.getCell(4);
-        cell4.setText("Оценка");
-        setCellTextCenterAndBold(cell4);
+        setHeaderCellWithLineBreak(headerRow.getCell(0), "ФИО студента");
+        setHeaderCellWithLineBreak(headerRow.getCell(1), "Курс, группа");
+        setHeaderCellWithLineBreak(headerRow.getCell(2), "Название организации, структурного подразделения, номер кабинета");
+        setHeaderCellWithLineBreak(headerRow.getCell(3), "Руководитель от НГУ", "(ФИО, должность, степень, звание)");
+        setHeaderCellWithLineBreak(headerRow.getCell(4), "Руководитель от института", "(ФИО, должность, степень, звание)");
+        setHeaderCellWithLineBreak(headerRow.getCell(5), "Оценка");
 
         for (Student student : students) {
             XWPFTableRow row = table.createRow();
-
-            while (row.getTableCells().size() < 5) {
+            while (row.getTableCells().size() < 6) {
                 row.addNewTableCell();
             }
 
-            XWPFTableCell c0 = row.getCell(0);
-            c0.setText(student.getFullName() != null ? student.getFullName() : "");
-            setCellTextCenter(c0);
-
-            XWPFTableCell c1 = row.getCell(1);
-            c1.setText(student.getCourseGroup() != null ? student.getCourseGroup() : "");
-            setCellTextCenter(c1);
-
-            XWPFTableCell c2 = row.getCell(2);
-            c2.setText(student.getPracticeBase() != null ? student.getPracticeBase() : "");
-            setCellTextCenter(c2);
-
-            XWPFTableCell c3 = row.getCell(3);
-            c3.setText(student.getFullNsuSupervisor() != null ? student.getFullNsuSupervisor() : "");
-            setCellTextCenter(c3);
-
-            XWPFTableCell c4 = row.getCell(4);
-            c4.setText("");
-            setCellTextCenter(c4);
+            setDataCell(row.getCell(0), student.getFullName());
+            setDataCell(row.getCell(1), student.getCourseGroup());
+            setDataCell(row.getCell(2), student.getPracticeBase());
+            setDataCell(row.getCell(3), student.getFullNsuSupervisor());
+            setDataCell(row.getCell(4), student.getFullInstituteSupervisor());
+            setDataCell(row.getCell(5), "");
         }
+    }
+
+    private static void setHeaderCellWithLineBreak(XWPFTableCell cell, String text) {
+        setHeaderCellWithLineBreak(cell, text, null);
+    }
+
+    private static void setHeaderCellWithLineBreak(XWPFTableCell cell, String line1, String line2) {
+        while (cell.getParagraphs().size() > 0) {
+            cell.removeParagraph(0);
+            cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+        }
+        XWPFParagraph paragraph = cell.addParagraph();
+        paragraph.setAlignment(ParagraphAlignment.CENTER);
+
+        XWPFRun run = paragraph.createRun();
+        setTableFont(run);
+        run.setBold(true);
+        run.setText(line1);
+
+        if (line2 != null && !line2.isEmpty()) {
+            run.addBreak();
+            run.setText(line2);
+        }
+    }
+
+    private static void setDataCell(XWPFTableCell cell, String text) {
+        cell.setText(text != null ? text : "");
+        cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+        setCellTextCenter(cell);
     }
 
     private static void createInternshipTable(XWPFDocument document, List<Student> students) {
@@ -370,6 +372,58 @@ public class ProtocolGenerator {
         cursor.dispose();
     }
 
+    private static void replaceAttendeesPlaceholder(XWPFDocument document, List<String> attendees) {
+        if (attendees == null || attendees.isEmpty()) {
+            removePlaceholders(document, "{{ATTENDEES}}");
+            removeEmptyParagraphsAfterHeader(document, "ПРИСУТСТВОВАЛИ");
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < attendees.size(); i++) {
+            sb.append(attendees.get(i));
+            if (i < attendees.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        String attendeesText = sb.toString();
+
+        for (int i = 0; i < document.getParagraphs().size(); i++) {
+            XWPFParagraph paragraph = document.getParagraphs().get(i);
+            String text = paragraph.getText();
+            if (text != null && text.contains("{{ATTENDEES}}")) {
+                String newText = text.replace("{{ATTENDEES}}", attendeesText);
+
+                document.removeBodyElement(i);
+
+                XWPFParagraph newParagraph = document.insertNewParagraph(document.getParagraphs().get(i).getCTP().newCursor());
+                XWPFRun run = newParagraph.createRun();
+                setDefaultFont(run);
+                run.setText(newText);
+                break;
+            }
+        }
+
+        for (XWPFTable table : document.getTables()) {
+            for (XWPFTableRow row : table.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    for (XWPFParagraph paragraph : cell.getParagraphs()) {
+                        String text = paragraph.getText();
+                        if (text != null && text.contains("{{ATTENDEES}}")) {
+                            String newText = text.replace("{{ATTENDEES}}", attendeesText);
+                            while (paragraph.getRuns().size() > 0) {
+                                paragraph.removeRun(0);
+                            }
+                            XWPFRun run = paragraph.createRun();
+                            setDefaultFont(run);
+                            run.setText(newText);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     private static void createSignatureTable(XWPFDocument document, String chairmanName, String secretaryName) {
         XWPFTable table = document.createTable(1, 2);
         table.setWidth("100%");
@@ -401,7 +455,7 @@ public class ProtocolGenerator {
 
     private static void setDefaultFont(XWPFRun run) {
         run.setFontFamily("Times New Roman");
-        run.setFontSize(14);
+        run.setFontSize(13);
     }
 
     private static void setTableFont(XWPFRun run) {

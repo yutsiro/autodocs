@@ -12,6 +12,7 @@ public class ProtocolData {
     private String chairman;
     private String secretary;
     private List<QuestionHandler> selectedQuestions = new ArrayList<>();
+    private List<String> attendees;
 
     public String getProtocolNumber() { return protocolNumber; }
     public void setProtocolNumber(String protocolNumber) { this.protocolNumber = protocolNumber; }
@@ -35,6 +36,10 @@ public class ProtocolData {
     public void setSelectedQuestions(List<QuestionHandler> selectedQuestions) {
         this.selectedQuestions = selectedQuestions;
     }
+
+    public List<String> getAttendees() { return attendees; }
+    public void setAttendees(List<String> attendees) { this.attendees = attendees; }
+
     public void addQuestion(QuestionHandler question) {
         this.selectedQuestions.add(question);
     }

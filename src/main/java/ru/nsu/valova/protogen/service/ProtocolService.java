@@ -123,9 +123,11 @@ public class ProtocolService {
         appSettings.incrementProtocolNumber();
     }
 
-    public ProtocolDataPreview prepareProtocolData(String protocolNumber, List<QuestionConfigItem> selectedQuestions) throws IOException {
+    public ProtocolDataPreview prepareProtocolData(String protocolNumber, List<QuestionConfigItem> selectedQuestions,
+                                                   List<String> attendees) throws IOException {
         ProtocolData data = new ProtocolData();
         data.setProtocolNumber(protocolNumber);
+        data.setAttendees(attendees);
 
         LocalDate today = LocalDate.now();
         data.setDay(String.valueOf(today.getDayOfMonth()));
@@ -248,6 +250,7 @@ public class ProtocolService {
                 student.setNsuSupervisorPosition(entity.getNSUSupervisor().position());
                 student.setNsuSupervisorDegree(entity.getNSUSupervisor().degree());
                 student.setNsuSupervisorAcademicTitle(entity.getNSUSupervisor().title());
+                student.setNsuSupervisorJobPlace(entity.getNSUSupervisor().job());
             }
 
             if (entity.getOrganizationSupervisor() != null) {
@@ -255,6 +258,7 @@ public class ProtocolService {
                 student.setInstituteSupervisorPosition(entity.getOrganizationSupervisor().position());
                 student.setInstituteSupervisorDegree(entity.getOrganizationSupervisor().degree());
                 student.setInstituteSupervisorAcademicTitle(entity.getOrganizationSupervisor().title());
+                student.setInstituteSupervisorJobPlace((entity.getOrganizationSupervisor().job()));
             }
 
             students.add(student);

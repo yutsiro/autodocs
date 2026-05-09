@@ -47,6 +47,10 @@ public class ProtocolGeneratorPanel extends Panel {
     private final FilterComponent directionFilter;
     private final FilterComponent typeFilter;
 
+    private JPanel attendeesPanel;
+    private List<JCheckBox> attendeeCheckBoxes;
+    private List<String> attendeesList;
+
     public ProtocolGeneratorPanel(Controller controller, StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
         this.questionsConfig = new QuestionsConfig();
@@ -71,9 +75,18 @@ public class ProtocolGeneratorPanel extends Panel {
         setBackground(backgroundColor);
         setBorder(new EmptyBorder(mediumGap, mediumGap, mediumGap, mediumGap));
 
+        loadAttendees();
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                createQuestionsPanel(),
+                createAttendeesPanel());
+        splitPane.setResizeWeight(0.7);
+        splitPane.setDividerSize(mediumGap);
+        splitPane.setBorder(BorderFactory.createEmptyBorder());
+
         add(createHeaderPanel(), BorderLayout.NORTH);
         add(createFiltersPanel(), BorderLayout.NORTH);
-        add(createQuestionsPanel(), BorderLayout.CENTER);
+        add(splitPane, BorderLayout.CENTER);
         add(createButtonPanel(), BorderLayout.SOUTH);
 
         loadQuestions();
@@ -162,10 +175,53 @@ public class ProtocolGeneratorPanel extends Panel {
         return panel;
     }
 
+    private JScrollPane createAttendeesPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(backgroundColor);
+
+        for (String attendee : attendeesList) {
+            JCheckBox checkBox = new JCheckBox(attendee);
+            checkBox.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize));
+            checkBox.setBackground(backgroundColor);
+            checkBox.setOpaque(false);
+            checkBox.setBorder(new EmptyBorder(6, 12, 6, 12));
+            attendeeCheckBoxes.add(checkBox);
+            panel.add(checkBox);
+        }
+
+        JPanel wrapperPanel = new JPanel(new BorderLayout());
+        wrapperPanel.setBackground(backgroundColor);
+        wrapperPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(focusColor),
+                "Выберите присутствовавших",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize),
+                textColor
+        ));
+
+        JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(backgroundColor);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(smallGap);
+
+        wrapperPanel.add(scrollPane, BorderLayout.CENTER);
+        wrapperPanel.setPreferredSize(new Dimension(400, 200));
+
+        return scrollPane;
+    }
+
     private void loadQuestions() {
         allQuestions = protocolService.getAvailableQuestions();
         updateDirectionFilter();
         applyFilters();
+    }
+
+    private void loadAttendees() {
+        attendeesList = appSettings.getDefaultAttendees();
+        attendeeCheckBoxes = new ArrayList<>();
     }
 
     private void updateDirectionFilter() {
@@ -377,7 +433,7 @@ public class ProtocolGeneratorPanel extends Panel {
             @Override
             protected Void doInBackground() {
                 try {
-                    previewData = protocolService.prepareProtocolData(finalProtocolNumber, finalSelectedQuestions);
+                    previewData = protocolService.prepareProtocolData(finalProtocolNumber, finalSelectedQuestions, getSelectedAttendees());
                 } catch (IOException e) {
                     error = e;
                 }
@@ -433,6 +489,16 @@ public class ProtocolGeneratorPanel extends Panel {
         for (QuestionCheckBox qcb : questionCheckBoxes) {
             if (qcb.isSelected()) {
                 selected.add(qcb.getQuestion());
+            }
+        }
+        return selected;
+    }
+
+    private List<String> getSelectedAttendees() {
+        List<String> selected = new ArrayList<>();
+        for (JCheckBox checkBox : attendeeCheckBoxes) {
+            if (checkBox.isSelected()) {
+                selected.add(checkBox.getText());
             }
         }
         return selected;

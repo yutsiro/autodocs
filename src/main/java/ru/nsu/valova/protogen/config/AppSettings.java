@@ -3,11 +3,13 @@ package ru.nsu.valova.protogen.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AppSettings {
@@ -20,6 +22,7 @@ public class AppSettings {
     private String defaultTemplatePath;
 
     private ObjectMapper objectMapper;
+    private List<String> defaultAttendees;
 
     public AppSettings() {
         this.objectMapper = new ObjectMapper();
@@ -61,6 +64,10 @@ public class AppSettings {
                 defaultTemplatePath = (String) settingsMap.get("defaultTemplatePath");
             }
 
+            if (settingsMap.containsKey("defaultAttendees")) {
+                defaultAttendees = (List<String>) settingsMap.get("defaultAttendees");
+            }
+
             System.out.println("Настройки успешно загружены из файла: " + SETTINGS_FILE);
         } catch (IOException e) {
             System.err.println("Ошибка при загрузке настроек: " + e.getMessage());
@@ -76,6 +83,7 @@ public class AppSettings {
             settingsMap.put("secretaryFullName", secretaryFullName);
             settingsMap.put("protocolOutputPath", protocolOutputPath);
             settingsMap.put("defaultTemplatePath", defaultTemplatePath);
+            settingsMap.put("defaultAttendees", defaultAttendees);
 
             objectMapper.writeValue(new File(SETTINGS_FILE), settingsMap);
             System.out.println("Настройки сохранены в файл: " + SETTINGS_FILE);
@@ -92,11 +100,26 @@ public class AppSettings {
         this.secretaryFullName = "старший преподаватель Артемьева Анастасия Алексеевна";
         this.protocolOutputPath = "testdata/generatedprotocols";
         this.defaultTemplatePath = "testdata/practice_protocol_template.docx";
+        this.defaultAttendees = List.of(
+                "Пальчунов Д. Е.",
+                "Артемьева А.А.",
+                "Яхъяева Г. Э.",
+                "Савостьянов А. Н.",
+                "Найданов Ч. А.",
+                "Хазанкин Г. Р.",
+                "Трегубов А. С."
+        );
     }
 
     public String getLastProtocolNumber() { return lastProtocolNumber; }
     public void setLastProtocolNumber(String lastProtocolNumber) {
         this.lastProtocolNumber = lastProtocolNumber;
+        saveSettings();
+    }
+
+    public List<String> getDefaultAttendees() { return defaultAttendees; }
+    public void setDefaultAttendees(List<String> defaultAttendees) {
+        this.defaultAttendees = defaultAttendees;
         saveSettings();
     }
 

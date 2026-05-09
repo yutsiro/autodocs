@@ -12,16 +12,19 @@ public class Student {
     private String supervisorPosition;
     private String supervisorDegree;
     private String supervisorAcademicTitle;
+    private String supervisorJobPlace;
 
     private String nsuSupervisorFullName;
     private String nsuSupervisorPosition;
     private String nsuSupervisorDegree;
     private String nsuSupervisorAcademicTitle;
+    private String nsuSupervisorJobPlace;
 
     private String instituteSupervisorFullName;
     private String instituteSupervisorPosition;
     private String instituteSupervisorDegree;
     private String instituteSupervisorAcademicTitle;
+    private String instituteSupervisorJobPlace;
 
     private String practiceBaseFull;        // место практики полностью
     private String practiceBaseName;        // "ИМ СО РАН"
@@ -82,6 +85,9 @@ public class Student {
     public String getSupervisorAcademicTitle() { return supervisorAcademicTitle; }
     public void setSupervisorAcademicTitle(String supervisorAcademicTitle) { this.supervisorAcademicTitle = supervisorAcademicTitle; }
 
+    public String getSupervisorJobPlace() { return supervisorJobPlace; }
+    public void setSupervisorJobPlace(String supervisorJobPlace) { this.supervisorJobPlace = supervisorJobPlace; }
+
     public String getPracticeBase() { return practiceBase; }
     public void setPracticeBase(String practiceBase) { this.practiceBase = practiceBase; }
 
@@ -97,6 +103,9 @@ public class Student {
     public String getNsuSupervisorAcademicTitle() { return nsuSupervisorAcademicTitle; }
     public void setNsuSupervisorAcademicTitle(String nsuSupervisorAcademicTitle) { this.nsuSupervisorAcademicTitle = nsuSupervisorAcademicTitle; }
 
+    public String getNsuSupervisorJobPlace() { return nsuSupervisorJobPlace; }
+    public void setNsuSupervisorJobPlace(String nsuSupervisorJobPlace) { this.nsuSupervisorJobPlace = nsuSupervisorJobPlace; }
+
     public String getInstituteSupervisorFullName() { return instituteSupervisorFullName; }
     public void setInstituteSupervisorFullName(String instituteSupervisorFullName) { this.instituteSupervisorFullName = instituteSupervisorFullName; }
 
@@ -108,6 +117,9 @@ public class Student {
 
     public String getInstituteSupervisorAcademicTitle() { return instituteSupervisorAcademicTitle; }
     public void setInstituteSupervisorAcademicTitle(String instituteSupervisorAcademicTitle) { this.instituteSupervisorAcademicTitle = instituteSupervisorAcademicTitle; }
+
+    public String getInstituteSupervisorJobPlace() { return instituteSupervisorJobPlace; }
+    public void setInstituteSupervisorJobPlace(String instituteSupervisorJobPlace) { this.instituteSupervisorJobPlace = instituteSupervisorJobPlace; }
 
     public String getPracticeBaseFull() { return practiceBaseFull; }
     public void setPracticeBaseFull(String practiceBaseFull) { this.practiceBaseFull = practiceBaseFull; }
@@ -147,6 +159,10 @@ public class Student {
             if (sb.length() > 0) sb.append(", ");
             sb.append(nsuSupervisorPosition);
         }
+        if (nsuSupervisorJobPlace != null && !nsuSupervisorJobPlace.isEmpty()) {
+            if (sb.length() > 0) sb.append(" ");
+            sb.append(nsuSupervisorJobPlace);
+        }
         if (nsuSupervisorDegree != null && !nsuSupervisorDegree.isEmpty()) {
             if (sb.length() > 0) sb.append(", ");
             sb.append(nsuSupervisorDegree);
@@ -164,6 +180,10 @@ public class Student {
         if (instituteSupervisorPosition != null && !instituteSupervisorPosition.isEmpty()) {
             if (sb.length() > 0) sb.append(", ");
             sb.append(instituteSupervisorPosition);
+        }
+        if (instituteSupervisorJobPlace != null && !instituteSupervisorJobPlace.isEmpty()) {
+            if (sb.length() > 0) sb.append(", ");
+            sb.append(instituteSupervisorJobPlace);
         }
         if (instituteSupervisorDegree != null && !instituteSupervisorDegree.isEmpty()) {
             if (sb.length() > 0) sb.append(", ");
