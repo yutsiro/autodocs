@@ -86,7 +86,8 @@ public class ThesisSupervisorReviewTableProcessor extends TableProcessor {
             removeAllCells(row);
 
             XWPFTableCell cell1 = row.createCell();
-            addTextInCell(cell1, competence);
+            XWPFRun run3 = addTextInCell(cell1, competence);
+            removeIndentation(run3);
             setCellBorders(cell1);
 
             XWPFTableCell cell2 = row.createCell();

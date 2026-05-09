@@ -101,7 +101,8 @@ public class PreparedTemplateGenerator extends AbstractGenerator<YamlConfig> {
 
         if (value != null && !value.isEmpty()) {
             // TODO: убрать костыль (нужно добавить в .yml флаг для обозначения покраски)
-            if (!key.equals("компетенцииЗаданияПрактики")) {
+            if (!key.equals("компетенцииЗаданияПрактики")
+                    && !key.equals("вСледующейСтепени")) {
                 run.setTextHighlightColor("white");
             }
             matcher.appendReplacement(result, Matcher.quoteReplacement(value));

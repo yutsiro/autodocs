@@ -20,9 +20,9 @@ public class ConfigManager {
         ConfigManager.ini = ini;
     }
 
-    public static boolean isDarkTheme() {
+    public static boolean isLightTheme() {
         String theme = getSetting(ConfigConstants.THEME);
-        return theme.equals(PrivateConstants.DARK_THEME.getValue());
+        return theme.equals(PrivateConstants.LIGHT_THEME.getValue());
     }
 
     public static String getSetting(ConfigConstants configConstants) {
@@ -59,7 +59,21 @@ public class ConfigManager {
 
     private static String getColor(ConfigConstants configConstants) {
         String theme = ConfigManager.getSetting(ConfigConstants.THEME);
-        String section = theme.equals(PrivateConstants.DARK_THEME.getValue()) ? PrivateConstants.DARK_COLORS_SECTION.getValue() : PrivateConstants.LIGHT_COLORS_SECTION.getValue();
+        String section;
+
+        if (theme.equals(PrivateConstants.DARK_THEME.getValue())) {
+            section = PrivateConstants.DARK_COLORS_SECTION.getValue();
+        }
+        else if (theme.equals(PrivateConstants.LIGHT_THEME.getValue())) {
+            section = PrivateConstants.LIGHT_COLORS_SECTION.getValue();
+        }
+        else if (theme.equals(PrivateConstants.PINK_THEME.getValue())) {
+            section = PrivateConstants.PINK_COLORS_SECTION.getValue();
+        }
+        else {
+            throw new IllegalStateException("Invalid theme");
+        }
+
         return ini.getValue(section, configConstants.getSettingName());
     }
 }

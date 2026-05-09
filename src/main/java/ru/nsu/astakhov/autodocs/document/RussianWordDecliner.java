@@ -70,6 +70,9 @@ public class RussianWordDecliner {
     public String getAbbreviatedName(String fullName) {
         String[] nameParts = fullName.split(" ");
 
+        if (nameParts.length != 3) {
+            return fullName;
+        }
         char name = nameParts[1].charAt(0);
         char patronymic = nameParts[2].charAt(0);
         String surname = nameParts[0];
@@ -81,6 +84,9 @@ public class RussianWordDecliner {
     public String getAbbreviatedName2(String fullName) {
         String[] nameParts = fullName.split(" ");
 
+        if (nameParts.length != 3) {
+            return fullName;
+        }
         char name = nameParts[1].charAt(0);
         char patronymic = nameParts[2].charAt(0);
         String surname = nameParts[0];

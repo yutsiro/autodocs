@@ -110,7 +110,7 @@ public class FileBox extends JPanel {
             Color highlighted;
             Color borderHighlight;
 
-            if (ConfigManager.isDarkTheme()) {
+            if (ConfigManager.isLightTheme()) {
                 highlighted = lightenColor(focusColor);
                 borderHighlight = primaryColor;
             }
