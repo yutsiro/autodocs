@@ -2,7 +2,6 @@ package ru.nsu.astakhov.autodocs.ui.view.panel;
 
 import org.springframework.stereotype.Component;
 import ru.nsu.astakhov.autodocs.repository.StudentRepository;
-import ru.nsu.astakhov.autodocs.ui.controller.ButtonCommand;
 import ru.nsu.astakhov.autodocs.ui.controller.Controller;
 import ru.nsu.astakhov.autodocs.ui.controller.handler.ProtocolGeneratorPanelEventHandler;
 import ru.nsu.astakhov.autodocs.ui.view.ProtocolGeneratorFilters;
@@ -39,7 +38,6 @@ public class ProtocolGeneratorPanel extends Panel {
     private List<QuestionCheckBox> questionCheckBoxes;
 
     private JTextField protocolNumberField;
-    private JButton generateButton;
     private JPanel questionsPanel;
 
     private final FilterComponent courseFilter;
@@ -47,9 +45,16 @@ public class ProtocolGeneratorPanel extends Panel {
     private final FilterComponent directionFilter;
     private final FilterComponent typeFilter;
 
-    private JPanel attendeesPanel;
     private List<JCheckBox> attendeeCheckBoxes;
     private List<String> attendeesList;
+
+    private CardLayout cardLayout;
+    private JPanel mainCardPanel;
+    private JPanel questionsCardPanel;
+    private JPanel attendeesCardPanel;
+    private JButton nextButton;
+    private JButton backButton;
+    private JButton generateFinalButton;
 
     public ProtocolGeneratorPanel(Controller controller, StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -77,19 +82,73 @@ public class ProtocolGeneratorPanel extends Panel {
 
         loadAttendees();
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                createQuestionsPanel(),
-                createAttendeesPanel());
-        splitPane.setResizeWeight(0.7);
-        splitPane.setDividerSize(mediumGap);
-        splitPane.setBorder(BorderFactory.createEmptyBorder());
+        cardLayout = new CardLayout();
+        mainCardPanel = new JPanel(cardLayout);
+        mainCardPanel.setBackground(backgroundColor);
+        mainCardPanel.setOpaque(false);
+
+        questionsCardPanel = createQuestionsCardPanel();
+
+        attendeesCardPanel = createAttendeesCardPanel();
+
+        mainCardPanel.add(questionsCardPanel, "QUESTIONS");
+        mainCardPanel.add(attendeesCardPanel, "ATTENDEES");
 
         add(createHeaderPanel(), BorderLayout.NORTH);
         add(createFiltersPanel(), BorderLayout.NORTH);
-        add(splitPane, BorderLayout.CENTER);
-        add(createButtonPanel(), BorderLayout.SOUTH);
+        add(mainCardPanel, BorderLayout.CENTER);
+        add(createNavigationButtonsPanel(), BorderLayout.SOUTH);
 
         loadQuestions();
+        cardLayout.show(mainCardPanel, "QUESTIONS");
+    }
+
+    private JPanel createNavigationButtonsPanel() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+        panel.setOpaque(false);
+        panel.setBorder(BorderFactory.createEmptyBorder(smallGap, 0, smallGap, 0));
+
+        backButton = new JButton("Назад");
+        styleButton(backButton, new Color(100, 100, 100), Color.WHITE);
+        backButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 1));
+        backButton.addActionListener(e -> {
+            cardLayout.show(mainCardPanel, "QUESTIONS");
+            backButton.setVisible(false);
+            nextButton.setVisible(true);
+            generateFinalButton.setVisible(false);
+        });
+
+        nextButton = new JButton("Далее");
+        styleButton(nextButton, new Color(221, 192, 210), Color.BLACK);
+        nextButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 1));
+        nextButton.addActionListener(e -> {
+            if (getSelectedQuestions().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Выберите хотя бы один вопрос",
+                        "Предупреждение", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            cardLayout.show(mainCardPanel, "ATTENDEES");
+            nextButton.setVisible(false);
+            backButton.setVisible(true);
+            generateFinalButton.setVisible(true);
+        });
+
+        generateFinalButton = new JButton("Сгенерировать протокол");
+        styleButton(generateFinalButton, new Color(221, 192, 210), Color.BLACK);
+        generateFinalButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 1));
+        generateFinalButton.addActionListener(e -> generateProtocol());
+        generateFinalButton.setVisible(false);
+
+        panel.add(Box.createHorizontalGlue());
+        panel.add(backButton);
+        panel.add(Box.createHorizontalStrut(mediumGap));
+        panel.add(nextButton);
+        panel.add(Box.createHorizontalStrut(mediumGap));
+        panel.add(generateFinalButton);
+        panel.add(Box.createHorizontalGlue());
+
+        return panel;
     }
 
     private JPanel createHeaderPanel() {
@@ -159,58 +218,80 @@ public class ProtocolGeneratorPanel extends Panel {
         return scrollPane;
     }
 
-    private JPanel createButtonPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+    private JPanel createQuestionsCardPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setBackground(backgroundColor);
         panel.setOpaque(false);
-        panel.setBorder(BorderFactory.createLineBorder(backgroundColor, smallGap / 2));
 
-        generateButton = createButton(ButtonCommand.GENERATE_PROTOCOL.getName());
-        generateButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 2));
-
-        panel.add(Box.createHorizontalGlue());
-        panel.add(generateButton);
-        panel.add(Box.createHorizontalGlue());
+        JScrollPane scrollPane = createQuestionsPanel();
+        panel.add(scrollPane, BorderLayout.CENTER);
 
         return panel;
     }
 
-    private JScrollPane createAttendeesPanel() {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    private JPanel createAttendeesCardPanel() {
+        JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(backgroundColor);
+        panel.setOpaque(false);
+
+        JLabel titleLabel = new JLabel("Выберите присутствующих:");
+        titleLabel.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, titleTextSize));
+        titleLabel.setBorder(new EmptyBorder(0, 0, mediumGap, 0));
+
+        JPanel attendeesContentPanel = new JPanel();
+        attendeesContentPanel.setLayout(new BoxLayout(attendeesContentPanel, BoxLayout.Y_AXIS));
+        attendeesContentPanel.setBackground(backgroundColor);
+        attendeesContentPanel.setOpaque(false);
 
         for (String attendee : attendeesList) {
             JCheckBox checkBox = new JCheckBox(attendee);
-            checkBox.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize));
+            checkBox.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 1));
             checkBox.setBackground(backgroundColor);
             checkBox.setOpaque(false);
-            checkBox.setBorder(new EmptyBorder(6, 12, 6, 12));
+            checkBox.setBorder(new EmptyBorder(8, 20, 8, 20));
             attendeeCheckBoxes.add(checkBox);
-            panel.add(checkBox);
+            attendeesContentPanel.add(checkBox);
         }
 
-        JPanel wrapperPanel = new JPanel(new BorderLayout());
-        wrapperPanel.setBackground(backgroundColor);
-        wrapperPanel.setBorder(BorderFactory.createTitledBorder(
+        JButton selectAllButton = new JButton("Выбрать всех");
+        selectAllButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize));
+        selectAllButton.addActionListener(e -> {
+            for (JCheckBox cb : attendeeCheckBoxes) {
+                cb.setSelected(true);
+            }
+        });
+
+        JButton clearAllButton = new JButton("Снять всех");
+        clearAllButton.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize));
+        clearAllButton.addActionListener(e -> {
+            for (JCheckBox cb : attendeeCheckBoxes) {
+                cb.setSelected(false);
+            }
+        });
+
+        JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, smallGap, smallGap));
+        buttonsPanel.setOpaque(false);
+        buttonsPanel.add(selectAllButton);
+        buttonsPanel.add(Box.createHorizontalStrut(smallGap));
+        buttonsPanel.add(clearAllButton);
+
+        JScrollPane scrollPane = new JScrollPane(attendeesContentPanel);
+        scrollPane.setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createLineBorder(focusColor),
-                "Выберите присутствовавших",
+                "Список присутствующих",
                 TitledBorder.LEFT,
                 TitledBorder.TOP,
                 FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize),
                 textColor
         ));
-
-        JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
         scrollPane.getViewport().setBackground(backgroundColor);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(smallGap);
 
-        wrapperPanel.add(scrollPane, BorderLayout.CENTER);
-        wrapperPanel.setPreferredSize(new Dimension(400, 200));
+        panel.add(titleLabel, BorderLayout.NORTH);
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
 
-        return scrollPane;
+        return panel;
     }
 
     private void loadQuestions() {
@@ -406,22 +487,27 @@ public class ProtocolGeneratorPanel extends Panel {
     }
 
     public void generateProtocol() {
-        String protocolNumber = protocolNumberField.getText().trim();
-        if (protocolNumber.isEmpty()) {
-            protocolNumber = protocolService.generateProtocolNumber();
-            protocolNumberField.setText(protocolNumber);
-        }
+        System.out.println("generateProtocol() вызван");
 
         List<QuestionConfigItem> selectedQuestions = getSelectedQuestions();
+        List<String> selectedAttendees = getSelectedAttendees();
+
+        System.out.println("Выбрано вопросов: " + selectedQuestions.size());
+        System.out.println("Выбрано присутствующих: " + selectedAttendees.size());
 
         if (selectedQuestions.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Выберите хотя бы один вопрос",
                     "Предупреждение", JOptionPane.WARNING_MESSAGE);
             return;
         }
+        String protocolNumber = protocolNumberField.getText().trim();
+        if (protocolNumber.isEmpty()) {
+            protocolNumber = protocolService.generateProtocolNumber();
+            protocolNumberField.setText(protocolNumber);
+        }
 
-        generateButton.setEnabled(false);
-        generateButton.setText("Загрузка...");
+        generateFinalButton.setEnabled(false);
+        generateFinalButton.setText("Загрузка...");
 
         final String finalProtocolNumber = protocolNumber;
         final List<QuestionConfigItem> finalSelectedQuestions = new ArrayList<>(selectedQuestions);
@@ -442,8 +528,8 @@ public class ProtocolGeneratorPanel extends Panel {
 
             @Override
             protected void done() {
-                generateButton.setEnabled(true);
-                generateButton.setText(ButtonCommand.GENERATE_PROTOCOL.getName());
+                generateFinalButton.setEnabled(true);
+                generateFinalButton.setText("Сгенерировать протокол");
 
                 if (error != null) {
                     JOptionPane.showMessageDialog(ProtocolGeneratorPanel.this,
@@ -553,6 +639,18 @@ public class ProtocolGeneratorPanel extends Panel {
         QuestionConfigItem getQuestion() {
             return question;
         }
+    }
+
+    private void styleButton(JButton button, Color bgColor, Color fgColor) {
+        button.setBackground(bgColor);
+        button.setForeground(fgColor);
+        button.setOpaque(true);
+        button.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(bgColor.darker()),
+                BorderFactory.createEmptyBorder(8, 16, 8, 16)
+        ));
+        button.setFocusPainted(false);
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     @Override
