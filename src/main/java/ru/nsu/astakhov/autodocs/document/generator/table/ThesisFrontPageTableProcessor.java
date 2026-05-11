@@ -10,7 +10,7 @@ public class ThesisFrontPageTableProcessor extends TableProcessor {
         int fontSize = 12;
         XWPFRun run1 = addRow(table, "Соруководитель ВКР", fontSize, false);
         run1.setBold(true);
-        addRow(table, "$(соруководительВКР.степень) $(соруководительВКР.звание)", fontSize, true);
+        addRow(table, "$(соруководительВКР.степень.звание)", fontSize, true);
         addRow(table, "$(соруководительВКР.должность.работаНГУ)", fontSize, true);
         addRow(table, "$(соруководительвкр.имяКратко)/…………..", fontSize, true);
         addRow(table, "             (ФИО) / (подпись)", 8, false);

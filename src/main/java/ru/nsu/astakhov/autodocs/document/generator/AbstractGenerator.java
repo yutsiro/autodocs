@@ -87,6 +87,9 @@ public abstract class AbstractGenerator<T> {
                     applyTableReplacement(run, table, matcher, config, result);
                 }
             }
+            // TODO: проблема в DocumentGenerator::applyDefaultReplacement с заменой на пустоту
+            // TODO: из-за этой проверки. Узнать, зачем изначально она добавлена.
+            // TODO: Убрать, если не нужна. Убрать кринж в DocumentGenerator::applyDefaultReplacement
             if (!result.isEmpty()) {
                 matcher.appendTail(result);
 

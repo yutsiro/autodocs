@@ -21,7 +21,7 @@ public class ThesisAssignmentTableProcessor extends TableProcessor {
 
         XWPFTableRow row3 = removeAllCells(table.createRow());
         XWPFTableCell row3Cell1 = row3.createCell();
-        XWPFRun run3 = addTextInCell(row3Cell1, "$(соруководительВКР.степень) $(соруководительВКР.звание)");
+        XWPFRun run3 = addTextInCell(row3Cell1, "$(соруководительВКР.степень.звание)");
         run3.setTextHighlightColor("yellow");
         row3.createCell();
 

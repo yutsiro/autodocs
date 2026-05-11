@@ -26,7 +26,7 @@ public class ThesisSupervisorReviewTableProcessor extends TableProcessor {
         this.table = table;
 
         addRow("Соруководитель", false, "", false);
-        addRow("$(соруководительВКР.имя)", true, "_____________", false);
+        addRow("$(соруководительВКР.имя),", true, "_____________", false);
         addRow("$(соруководительвкр.должность.работангу)", true, "                подпись", false);
         // TODO: убрать явную дату
         addRow("«31» мая 2026 г.", false, "", false);

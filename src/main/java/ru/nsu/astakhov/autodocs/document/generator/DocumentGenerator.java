@@ -273,6 +273,56 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
                 else {
                     return ", скорректирована распоряжением проректора по учебной работе " + orderOnCorrection;
                 }
+            }),
+            entry("руководительвкр.степень.звание", (student, decliner) -> {
+                String degree = student.thesisSupervisor().degree();
+                String title = student.thesisSupervisor().title();
+
+                boolean degreeExists = degree != null && !degree.isBlank();
+                boolean titleExists = title != null && !title.isBlank();
+
+                String result;
+                if (degreeExists) {
+                    if (titleExists) {
+                        result = degree + ", " + title;
+                    }
+                    else {
+                        result = degree;
+                    }
+                }
+                else if (titleExists) {
+                    result = title;
+                }
+                else {
+                    result = "";
+                }
+
+                return result;
+            }),
+            entry("соруководительвкр.степень.звание", (student, decliner) -> {
+                String degree = student.thesisCoSupervisorDegree();
+                String title = student.thesisCoSupervisorTitle();
+
+                boolean degreeExists = degree != null && !degree.isBlank();
+                boolean titleExists = title != null && !title.isBlank();
+
+                String result;
+                if (degreeExists) {
+                    if (titleExists) {
+                        result = degree + ", " + title;
+                    }
+                    else {
+                        result = degree;
+                    }
+                }
+                else if (titleExists) {
+                    result = title;
+                }
+                else {
+                    result = "";
+                }
+
+                return result;
             })
     );
 
@@ -356,7 +406,8 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
             Matcher matcher,
             StudentDto studentDto,
             String key,
-            StringBuilder result) {
+            StringBuilder result
+    ) {
         String normalizedKey = key.toLowerCase(Locale.ROOT);
         Function<StudentDto, String> resolver = RESOLVERS.get(normalizedKey);
         String value;
@@ -404,12 +455,18 @@ public class DocumentGenerator extends AbstractGenerator<StudentDto> {
                 || normalizedKey.equals("руководительорганизации.звание")
                 || normalizedKey.equals("соруководительвкр.степень")
                 || normalizedKey.equals("соруководительвкр.звание")
-                || normalizedKey.equals("рецензент");
+                || normalizedKey.equals("рецензент")
+                || normalizedKey.equals("руководительвкр.степень.звание")
+                || normalizedKey.equals("соруководительвкр.степень.звание");
 
+        // TODO: проблема в AbstractGenerator::processParagraphInternal
         if (normalizedKey.equals("руководительвкр.звание") && value.isBlank()
         || normalizedKey.equals("рецензент") && value.isBlank()
-        || normalizedKey.equals("руководительвкр.степень") && value.isBlank()) {
+        || normalizedKey.equals("руководительвкр.степень") && value.isBlank()
+        || normalizedKey.equals("руководительвкр.степень.звание") && value.isBlank()
+        || normalizedKey.equals("соруководительвкр.степень.звание") && value.isBlank()) {
             value = " ";
+            run.setTextHighlightColor("white");
         }
 
         if (replaceWithValue) {
