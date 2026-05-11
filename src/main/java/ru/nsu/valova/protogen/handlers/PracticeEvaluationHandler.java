@@ -39,14 +39,16 @@ public class PracticeEvaluationHandler extends BaseQuestionHandler {
             degreeTextInstrumental = "бакалаврами";
         }
         return List.of(
-                String.format("Отчеты %s %s-го курса об итогах прохождения %s",
+                String.format("Отчеты %s %s-го курса %s об итогах прохождения %s",
                         degreeTextGenitive,
                         config.getCourse(),
+                        config.getEducationalProfileShort(),
                         config.getPracticeTypeGenitive()),
-                String.format("Отзывы руководителей практики о прохождении %s %s %s-го курса",
+                String.format("Отзывы руководителей практики о прохождении %s %s %s-го курса %s",
                         config.getPracticeTypeGenitive(),
                         degreeTextInstrumental,
-                        config.getCourse())
+                        config.getCourse(),
+                        config.getEducationalProfileShort())
         );
     }
 

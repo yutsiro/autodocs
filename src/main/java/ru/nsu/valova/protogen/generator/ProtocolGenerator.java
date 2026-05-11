@@ -1,6 +1,10 @@
 package ru.nsu.valova.protogen.generator;
 
 import org.apache.poi.xwpf.usermodel.*;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTBody;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTDocument1;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
+import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import ru.nsu.valova.protogen.handlers.InternshipPlacementHandler;
 import ru.nsu.valova.protogen.handlers.QuestionHandler;
 import ru.nsu.valova.protogen.model.ProtocolData;
@@ -9,6 +13,7 @@ import ru.nsu.valova.protogen.model.Student;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.*;
 
 public class ProtocolGenerator {
@@ -21,6 +26,20 @@ public class ProtocolGenerator {
 
         try (FileInputStream fis = new FileInputStream(templatePath);
              XWPFDocument document = new XWPFDocument(fis)) {
+            CTDocument1 ctDocument = document.getDocument();
+            CTBody body = ctDocument.getBody();
+            if (body != null && body.getSectPr() != null) {
+                CTSectPr sectPr = body.getSectPr();
+                if (sectPr.getPgMar() == null) {
+                    sectPr.addNewPgMar();
+                }
+                CTPageMar pageMar = sectPr.getPgMar();
+                // размеры полей: 568.2 это примерно 1 см, 852.3 - 1.5 см
+                pageMar.setTop(BigInteger.valueOf(568));
+                pageMar.setBottom(BigInteger.valueOf(853));
+                pageMar.setLeft(BigInteger.valueOf(853));
+                pageMar.setRight(BigInteger.valueOf(853));
+            }
 
             Map<String, String> values = new HashMap<>();
             values.put("PROTOCOL_NUMBER", protocolData.getProtocolNumber());
