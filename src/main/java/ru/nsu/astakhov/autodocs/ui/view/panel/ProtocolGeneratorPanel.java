@@ -552,10 +552,10 @@ public class ProtocolGeneratorPanel extends Panel {
 
                         appSettings.setLastProtocolNumberIfValid(previewData.protocolData.getProtocolNumber());
 
-                        protocolService.generateFinalProtocol(outputDirectory, templatePath);
+                        String outputPath = protocolService.generateFinalProtocol(outputDirectory, templatePath);
 
                         JOptionPane.showMessageDialog(ProtocolGeneratorPanel.this,
-                                "Протокол успешно создан!",
+                                "Протокол успешно создан!\nСохранен в: " + outputPath,
                                 "Готово", JOptionPane.INFORMATION_MESSAGE);
 
                         protocolNumberField.setText(protocolService.generateProtocolNumber());

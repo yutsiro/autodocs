@@ -120,7 +120,7 @@ public class ProtocolService {
                 System.currentTimeMillis() + ".docx";
 
         ProtocolGenerator.generateProtocol(templatePath, outputPath, data);
-        appSettings.incrementProtocolNumber();
+        appSettings.incrementProtocolNumber(protocolNumber);
     }
 
     public ProtocolDataPreview prepareProtocolData(String protocolNumber, List<QuestionConfigItem> selectedQuestions,
@@ -151,13 +151,14 @@ public class ProtocolService {
         return new ProtocolDataPreview(data, handlers);
     }
 
-    public void generateFinalProtocol(String outputDirectory, String templatePath) throws IOException {
+    public String generateFinalProtocol(String outputDirectory, String templatePath) throws IOException {
         String outputPath = outputDirectory + "/protocol_" +
                 currentProtocolData.getProtocolNumber().replace("/", "-") + "_" +
                 System.currentTimeMillis() + ".docx";
         ProtocolGenerator.generateProtocol(templatePath, outputPath, currentProtocolData);
-        appSettings.incrementProtocolNumber();
+        appSettings.incrementProtocolNumber(currentProtocolData.getProtocolNumber());
         currentProtocolData = null;
+        return outputDirectory;
     }
 
     public static class ProtocolDataPreview {

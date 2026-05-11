@@ -132,7 +132,11 @@ public class AppSettings {
         }
     }
 
-    public void incrementProtocolNumber() {
+    public void incrementProtocolNumber(String protocolNumber) {
+        if (!isValidProtocolNumberFormat(protocolNumber)) {
+            System.out.println("Номер протокола не был инкрементирован.");
+            return;
+        }
         String[] parts = lastProtocolNumber.split("-");
         int currentYear = Integer.parseInt(parts[1]);
         int currentNumber = Integer.parseInt(parts[0]);
