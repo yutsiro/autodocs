@@ -1,0 +1,8 @@
+{
+  "protocolOutputPath" : "testdata/generatedprotocols",
+  "defaultTemplatePath" : "testdata/practice_protocol_template.docx",
+  "chairmanFullName" : "заведующий кафедрой д.ф.-м.н. Пальчунов Дмитрий Евгеньевич",
+  "secretaryFullName" : "старший преподаватель Артемьева Анастасия Алексеевна",
+  "lastProtocolNumber" : "1-26",
+  "defaultAttendees" : [ "Пальчунов Д. Е.", "Артемьева А.А.", "Яхъяева Г. Э.", "Савостьянов А. Н.", "Найданов Ч. А.", "Хазанкин Г. Р.", "Трегубов А. С." ]
+}
