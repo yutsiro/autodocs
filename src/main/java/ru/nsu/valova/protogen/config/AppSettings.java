@@ -3,7 +3,6 @@ package ru.nsu.valova.protogen.config;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,7 +93,7 @@ public class AppSettings {
 
     private void setDefaultSettings() {
         String year = String.valueOf(LocalDate.now().getYear());
-        this.lastProtocolNumber = year.substring(2) + "-1";
+        this.lastProtocolNumber = "1-" + year.substring((2));
 
         this.chairmanFullName = "заведующий кафедрой д.ф.-м.н. Пальчунов Дмитрий Евгеньевич";
         this.secretaryFullName = "старший преподаватель Артемьева Анастасия Алексеевна";
@@ -129,14 +128,14 @@ public class AppSettings {
             saveSettings();
             System.out.println("Номер протокола сохранён: " + protocolNumber);
         } else {
-            System.out.println("Номер протокола не соответствует формату ГГ-ХХ, пропускаем сохранение: " + protocolNumber);
+            System.out.println("Номер протокола не соответствует формату ХХ-ГГ, пропускаем сохранение: " + protocolNumber);
         }
     }
 
     public void incrementProtocolNumber() {
         String[] parts = lastProtocolNumber.split("-");
-        int currentYear = Integer.parseInt(parts[0]);
-        int currentNumber = Integer.parseInt(parts[1]);
+        int currentYear = Integer.parseInt(parts[1]);
+        int currentNumber = Integer.parseInt(parts[0]);
 
         int actualYear = java.time.Year.now().getValue() % 100;
 
@@ -147,7 +146,7 @@ public class AppSettings {
             currentNumber = 1;
         }
 
-        this.lastProtocolNumber = currentYear + "-" + currentNumber;
+        this.lastProtocolNumber = currentNumber + "-" + currentYear;
         saveSettings();
     }
 
@@ -156,12 +155,12 @@ public class AppSettings {
             return false;
         }
 
-        if (!protocolNumber.matches("\\d{2}-\\d+")) {
+        if (!protocolNumber.matches("\\d+-\\d{2}")) {
             return false;
         }
 
         String[] parts = protocolNumber.split("-");
-        int yearFromNumber = Integer.parseInt(parts[0]);
+        int yearFromNumber = Integer.parseInt(parts[1]);
         int currentYear = java.time.Year.now().getValue() % 100;
 
         return yearFromNumber == currentYear;
