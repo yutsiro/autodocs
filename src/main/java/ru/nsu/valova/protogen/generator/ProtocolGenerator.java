@@ -88,6 +88,8 @@ public class ProtocolGenerator {
 
             createSignatureTable(document, values.get("CHAIRMAN_NAME"), values.get("SECRETARY_NAME"));
 
+            formatAllTables(document);
+
             try (FileOutputStream fos = new FileOutputStream(outputPath)) {
                 document.write(fos);
             }
@@ -511,6 +513,24 @@ public class ProtocolGenerator {
             if (p.getRuns().isEmpty()) {
                 XWPFRun run = p.createRun();
                 setTableFont(run);
+            }
+        }
+    }
+
+    private static void formatAllTables(XWPFDocument document) {
+        for (XWPFTable table : document.getTables()) {
+            for (XWPFTableRow row : table.getRows()) {
+                for (XWPFTableCell cell : row.getTableCells()) {
+                    cell.setVerticalAlignment(XWPFTableCell.XWPFVertAlign.CENTER);
+                    for (XWPFParagraph paragraph : cell.getParagraphs()) {
+                        paragraph.setAlignment(ParagraphAlignment.CENTER);
+                        paragraph.setSpacingAfter(0);
+                        paragraph.setSpacingBefore(0);
+                        for (XWPFRun run : paragraph.getRuns()) {
+                            setTableFont(run);
+                        }
+                    }
+                }
             }
         }
     }
