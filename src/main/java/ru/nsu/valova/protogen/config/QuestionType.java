@@ -2,5 +2,6 @@ package ru.nsu.valova.protogen.config;
 
 public enum QuestionType {
     PRACTICE_EVALUATION,
-    INTERNSHIP_PLACEMENT
+    INTERNSHIP_PLACEMENT,
+    THESIS_PRE_DEFENSE
 }

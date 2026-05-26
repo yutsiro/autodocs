@@ -1,11 +1,13 @@
 package ru.nsu.valova.protogen.service;
 
 import ru.nsu.astakhov.autodocs.model.Course;
+import ru.nsu.astakhov.autodocs.model.EduProgram;
 import ru.nsu.astakhov.autodocs.model.Specialization;
 import ru.nsu.astakhov.autodocs.model.StudentEntity;
 import ru.nsu.astakhov.autodocs.repository.StudentRepository;
 import ru.nsu.valova.protogen.config.AppSettings;
 import ru.nsu.valova.protogen.config.QuestionConfigItem;
+import ru.nsu.valova.protogen.config.QuestionType;
 import ru.nsu.valova.protogen.config.QuestionsConfig;
 import ru.nsu.valova.protogen.generator.ProtocolGenerator;
 import ru.nsu.valova.protogen.handlers.QuestionHandler;
@@ -47,6 +49,20 @@ public class ProtocolService {
         System.out.println("Ожидаемый тип практики: " + config.getPracticeTypeNominative());
 
         Course courseEnum = getCourseEnum(config.getCourse());
+
+        if (config.getType() == QuestionType.THESIS_PRE_DEFENSE) {
+            EduProgram eduProgram;
+            if ("бакалавриат".equals(config.getDegreeLevel())) {
+                eduProgram = EduProgram.BACHELOR_PROGRAM; // "09.03.01 Информатика и вычислительная техника"
+            } else {
+                eduProgram = EduProgram.MASTER_PROGRAM;   // "09.04.01 Информатика и вычислительная техника"
+            }
+            List<StudentEntity> entities = studentRepository.findByCourse(courseEnum);
+            List<StudentEntity> filtered = entities.stream()
+                    .filter(s -> s.getEduProgram() == eduProgram)
+                    .collect(Collectors.toList());
+            return convertToMyModel(filtered);
+        }
 
         Specialization specializationEnum = getSpecializationEnum(config.getEducationalProfile());
 
@@ -261,6 +277,35 @@ public class ProtocolService {
                 student.setInstituteSupervisorAcademicTitle(entity.getOrganizationSupervisor().title());
                 student.setInstituteSupervisorJobPlace((entity.getOrganizationSupervisor().job()));
             }
+
+            student.setThesisTopic(entity.getThesisTopic());
+
+            if (entity.getThesisSupervisor() != null) {
+                student.setThesisSupervisorFullName(entity.getThesisSupervisor().name());
+                student.setThesisSupervisorDegree(entity.getThesisSupervisor().degree());
+                student.setThesisSupervisorTitle(entity.getThesisSupervisor().title());
+                student.setThesisSupervisorPosition(entity.getThesisSupervisor().position());
+                student.setThesisSupervisorJobPlace(entity.getThesisSupervisor().job());
+            }
+
+            StringBuilder coSup = new StringBuilder();
+            if (entity.getThesisCoSupervisor() != null && !entity.getThesisCoSupervisor().isEmpty())
+                coSup.append(entity.getThesisCoSupervisor());
+            if (entity.getThesisCoSupervisorDegree() != null && !entity.getThesisCoSupervisorDegree().isEmpty()) {
+                if (!coSup.isEmpty()) coSup.append(", ");
+                coSup.append(entity.getThesisCoSupervisorDegree());
+            }
+            if (entity.getThesisCoSupervisorTitle() != null && !entity.getThesisCoSupervisorTitle().isEmpty()) {
+                if (!coSup.isEmpty()) coSup.append(", ");
+                coSup.append(entity.getThesisCoSupervisorTitle());
+            }
+            if (entity.getThesisCoSupervisorPositionAndJob() != null && !entity.getThesisCoSupervisorPositionAndJob().isEmpty()) {
+                if (!coSup.isEmpty()) coSup.append(", ");
+                coSup.append(entity.getThesisCoSupervisorPositionAndJob());
+            }
+            student.setThesisCoSupervisorFull(coSup.toString());
+
+            student.setThesisConsultant(entity.getThesisConsultant());
 
             students.add(student);
         }

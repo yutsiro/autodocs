@@ -7,6 +7,7 @@ import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTPageMar;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.CTSectPr;
 import ru.nsu.valova.protogen.handlers.InternshipPlacementHandler;
 import ru.nsu.valova.protogen.handlers.QuestionHandler;
+import ru.nsu.valova.protogen.handlers.ThesisPreDefenseHandler;
 import ru.nsu.valova.protogen.model.ProtocolData;
 import ru.nsu.valova.protogen.model.Student;
 
@@ -67,28 +68,56 @@ public class ProtocolGenerator {
 
             int counter = 1;
             for (QuestionHandler question : protocolData.getSelectedQuestions()) {
-                XWPFParagraph decisionPara = document.createParagraph();
-                decisionPara.setIndentationLeft(720);
-                decisionPara.setIndentationHanging(360);
-
-                XWPFRun decisionRun = decisionPara.createRun();
-                setDefaultFont(decisionRun);
-                decisionRun.setText(counter + ".     " + question.getDecisionText());
-
+                if (question instanceof ThesisPreDefenseHandler) {
+                    int studentCount = question.getStudents() != null ? question.getStudents().size() : 0;
+                    String degreeLabel;
+                    if ("бакалавриат".equals(((ThesisPreDefenseHandler) question).getConfig().getDegreeLevel())) {
+                        degreeLabel = "бакалавров";
+                    } else {
+                        degreeLabel = "магистрантов";
+                    }
+                    // пункт о допуске
+                    XWPFParagraph admitPara = document.createParagraph();
+                    admitPara.setIndentationLeft(720);
+                    admitPara.setIndentationHanging(360);
+                    admitPara.setSpacingAfter(0);
+                    XWPFRun admitRun = admitPara.createRun();
+                    setDefaultFont(admitRun);
+                    admitRun.setText(counter + ".     Допустить к защите выпускных квалификационных работ " + studentCount + " " + degreeLabel + ".");
+                    counter++;
+                    // пункт об утверждении результатов
+                    XWPFParagraph decisionPara = document.createParagraph();
+                    decisionPara.setIndentationLeft(720);
+                    decisionPara.setIndentationHanging(360);
+                    XWPFRun decisionRun = decisionPara.createRun();
+                    setDefaultFont(decisionRun);
+                    decisionRun.setText(counter + ".     " + question.getDecisionText());
+                    counter++;
+                } else {
+                    XWPFParagraph decisionPara = document.createParagraph();
+                    decisionPara.setIndentationLeft(720);
+                    decisionPara.setIndentationHanging(360);
+                    XWPFRun decisionRun = decisionPara.createRun();
+                    setDefaultFont(decisionRun);
+                    decisionRun.setText(counter + ".     " + question.getDecisionText());
+                    counter++;
+                }
+                // создание таблицы (общее для всех)
                 if (question.getStudents() != null && !question.getStudents().isEmpty()) {
                     if (question instanceof InternshipPlacementHandler) {
                         createInternshipTable(document, question.getStudents());
+                    } else if (question instanceof ThesisPreDefenseHandler) {
+                        createThesisPreDefenseTable(document, question.getStudents(), question);
                     } else {
                         createPracticeEvaluationTable(document, question.getStudents());
                     }
                     document.createParagraph();
                 }
-                counter++;
             }
 
-            createSignatureTable(document, values.get("CHAIRMAN_NAME"), values.get("SECRETARY_NAME"));
-
             formatAllTables(document);
+
+            createSignatureTable(document, values.get("CHAIRMAN_NAME"), values.get("SECRETARY_NAME"));
 
             try (FileOutputStream fos = new FileOutputStream(outputPath)) {
                 document.write(fos);
@@ -264,6 +293,69 @@ public class ProtocolGenerator {
             }
 
             document.createParagraph();
+        }
+    }
+
+    private static void createThesisPreDefenseTable(XWPFDocument document, List<Student> students, QuestionHandler question) {
+        if (students == null || students.isEmpty()) return;
+
+        Student sample = students.get(0);
+        String eduProgram = sample.getEducationalProgram() != null ? sample.getEducationalProgram() : "";
+        XWPFParagraph headerPara = document.createParagraph();
+        headerPara.setSpacingBefore(200);
+        headerPara.setSpacingAfter(100);
+        XWPFRun headerRun = headerPara.createRun();
+        setDefaultFont(headerRun);
+        headerRun.setBold(true);
+        headerRun.setText("Образовательная программа (профиль): " + eduProgram + ".");
+
+        XWPFTable table = document.createTable();
+        table.setWidth("100%");
+        XWPFTableRow headerRow = table.getRow(0);
+        while (headerRow.getTableCells().size() < 8) headerRow.addNewTableCell();
+
+        setHeaderCellWithLineBreak(headerRow.getCell(0), "№");
+        setHeaderCellWithLineBreak(headerRow.getCell(1), "ФИО студента");
+        setHeaderCellWithLineBreak(headerRow.getCell(2), "Группа");
+        setHeaderCellWithLineBreak(headerRow.getCell(3), "Руководитель ВКР (ФИО, степень, должность, место работы в НГУ)");
+        setHeaderCellWithLineBreak(headerRow.getCell(4), "Соруководитель ВКР (при наличии, ФИО, степень, должность, место работы в НГУ)");
+        setHeaderCellWithLineBreak(headerRow.getCell(5), "Консультант (при наличии, ФИО, степень, должность, место работы)");
+        setHeaderCellWithLineBreak(headerRow.getCell(6), "Тема ВКР");
+        setHeaderCellWithLineBreak(headerRow.getCell(7), "Заключение кафедры (допущен/не допущен, повторная защита с доработкой/с новой темой)");
+
+        int counter = 1;
+        for (Student student : students) {
+            XWPFTableRow row = table.createRow();
+            while (row.getTableCells().size() < 8) row.addNewTableCell();
+
+            setDataCell(row.getCell(0), String.valueOf(counter++));
+            setDataCell(row.getCell(1), student.getFullName());
+            setDataCell(row.getCell(2), student.getGroup());
+
+            String supervisor = student.getFullThesisSupervisor();
+//            StringBuilder supervisor = new StringBuilder();
+//            if (student.getThesisSupervisorFullName() != null) supervisor.append(student.getThesisSupervisorFullName());
+//            if (student.getThesisSupervisorDegree() != null && !student.getThesisSupervisorDegree().isEmpty()) {
+//                if (!supervisor.isEmpty()) supervisor.append(", ");
+//                supervisor.append(student.getThesisSupervisorDegree());
+//            }
+//            if (student.getThesisSupervisorTitle() != null && !student.getThesisSupervisorTitle().isEmpty()) {
+//                if (!supervisor.isEmpty()) supervisor.append(", ");
+//                supervisor.append(student.getThesisSupervisorTitle());
+//            }
+//            if (student.getThesisSupervisorPosition() != null && !student.getThesisSupervisorPosition().isEmpty()) {
+//                if (!supervisor.isEmpty()) supervisor.append(", ");
+//                supervisor.append(student.getThesisSupervisorPosition());
+//            }
+//            if (student.getThesisSupervisorJobPlace() != null && !student.getThesisSupervisorJobPlace().isEmpty()) {
+//                if (!supervisor.isEmpty()) supervisor.append(", ");
+//                supervisor.append(student.getThesisSupervisorJobPlace());
+//            }
+            setDataCell(row.getCell(3), supervisor.toString());
+            setDataCell(row.getCell(4), student.getThesisCoSupervisorFull() != null ? student.getThesisCoSupervisorFull() : "");
+            setDataCell(row.getCell(5), student.getThesisConsultant() != null ? student.getThesisConsultant() : "");
+            setDataCell(row.getCell(6), student.getThesisTopic() != null ? student.getThesisTopic() : "");
+            setDataCell(row.getCell(7), "");
         }
     }
 
@@ -468,6 +560,7 @@ public class ProtocolGenerator {
             }
         }
         for (XWPFParagraph p : rightCell.getParagraphs()) {
+            p.setAlignment(ParagraphAlignment.RIGHT);
             for (XWPFRun run : p.getRuns()) {
                 setSignatureFont(run);
             }

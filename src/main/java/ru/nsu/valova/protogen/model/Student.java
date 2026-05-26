@@ -9,9 +9,9 @@ public class Student {
     private String practiceBase;            //"ИМ СО РАН, Лаборатория теории вычислимости и прикладной логики"
 
     private String supervisorFullName;
-    private String supervisorPosition;
-    private String supervisorDegree;
-    private String supervisorAcademicTitle;
+    private String supervisorPosition;      // должность
+    private String supervisorDegree;        // степень
+    private String supervisorAcademicTitle; // звание
     private String supervisorJobPlace;
 
     private String nsuSupervisorFullName;
@@ -35,6 +35,17 @@ public class Student {
 
     private String fullPlaceOfInternship;
     private String organizationName;
+
+    private String thesisTopic;
+
+    private String thesisSupervisorFullName;
+    private String thesisSupervisorDegree;
+    private String thesisSupervisorTitle;
+    private String thesisSupervisorPosition;
+    private String thesisSupervisorJobPlace;
+
+    private String thesisCoSupervisorFull;
+    private String thesisConsultant;
 
     public Student() {}
 
@@ -142,6 +153,30 @@ public class Student {
     public String getOrganizationName() { return organizationName; }
     public void setOrganizationName(String organizationName) { this.organizationName = organizationName; }
 
+    public String getThesisTopic() { return thesisTopic; }
+    public void setThesisTopic(String thesisTopic) { this.thesisTopic = thesisTopic; }
+
+    public String getThesisSupervisorFullName() { return thesisSupervisorFullName; }
+    public void setThesisSupervisorFullName(String thesisSupervisorFullName) { this.thesisSupervisorFullName = thesisSupervisorFullName; }
+
+    public String getThesisSupervisorDegree() { return thesisSupervisorDegree; }
+    public void setThesisSupervisorDegree(String thesisSupervisorDegree) { this.thesisSupervisorDegree = thesisSupervisorDegree; }
+
+    public String getThesisSupervisorTitle() { return thesisSupervisorTitle; }
+    public void setThesisSupervisorTitle(String thesisSupervisorTitle) { this.thesisSupervisorTitle = thesisSupervisorTitle; }
+
+    public String getThesisSupervisorPosition() { return thesisSupervisorPosition; }
+    public void setThesisSupervisorPosition(String thesisSupervisorPosition) { this.thesisSupervisorPosition = thesisSupervisorPosition; }
+
+    public String getThesisSupervisorJobPlace() { return thesisSupervisorJobPlace; }
+    public void setThesisSupervisorJobPlace(String thesisSupervisorJobPlace) { this.thesisSupervisorJobPlace = thesisSupervisorJobPlace; }
+
+    public String getThesisConsultant() { return thesisConsultant; }
+    public void setThesisConsultant(String thesisConsultant) { this.thesisConsultant = thesisConsultant; }
+
+    public String getThesisCoSupervisorFull() { return thesisCoSupervisorFull; }
+    public void setThesisCoSupervisorFull(String thesisCoSupervisorFull) { this.thesisCoSupervisorFull = thesisCoSupervisorFull; }
+
     public String getCourseGroup() { return course + " курс, группа " + group; }
 
     public String getDegreeLevel() {
@@ -156,19 +191,19 @@ public class Student {
         StringBuilder sb = new StringBuilder();
         if (nsuSupervisorFullName != null && !nsuSupervisorFullName.isEmpty()) sb.append(nsuSupervisorFullName);
         if (nsuSupervisorPosition != null && !nsuSupervisorPosition.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(nsuSupervisorPosition);
         }
         if (nsuSupervisorJobPlace != null && !nsuSupervisorJobPlace.isEmpty()) {
-            if (sb.length() > 0) sb.append(" ");
+            if (!sb.isEmpty()) sb.append(" ");
             sb.append(nsuSupervisorJobPlace);
         }
         if (nsuSupervisorDegree != null && !nsuSupervisorDegree.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(nsuSupervisorDegree);
         }
         if (nsuSupervisorAcademicTitle != null && !nsuSupervisorAcademicTitle.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(nsuSupervisorAcademicTitle);
         }
         return sb.toString();
@@ -178,20 +213,42 @@ public class Student {
         StringBuilder sb = new StringBuilder();
         if (instituteSupervisorFullName != null && !instituteSupervisorFullName.isEmpty()) sb.append(instituteSupervisorFullName);
         if (instituteSupervisorPosition != null && !instituteSupervisorPosition.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(instituteSupervisorPosition);
         }
         if (instituteSupervisorJobPlace != null && !instituteSupervisorJobPlace.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(" ");
             sb.append(instituteSupervisorJobPlace);
         }
         if (instituteSupervisorDegree != null && !instituteSupervisorDegree.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(instituteSupervisorDegree);
         }
         if (instituteSupervisorAcademicTitle != null && !instituteSupervisorAcademicTitle.isEmpty()) {
-            if (sb.length() > 0) sb.append(", ");
+            if (!sb.isEmpty()) sb.append(", ");
             sb.append(instituteSupervisorAcademicTitle);
+        }
+        return sb.toString();
+    }
+
+    public String getFullThesisSupervisor() {
+        StringBuilder sb = new StringBuilder();
+        if (thesisSupervisorFullName != null && !thesisSupervisorFullName.isEmpty()) sb.append(thesisSupervisorFullName);
+        if (thesisSupervisorPosition != null && !thesisSupervisorPosition.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(", ");
+            sb.append(thesisSupervisorPosition);
+        }
+        if (thesisSupervisorJobPlace != null && !thesisSupervisorJobPlace.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(" ");
+            sb.append(thesisSupervisorJobPlace);
+        }
+        if (thesisSupervisorDegree != null && !thesisSupervisorDegree.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(", ");
+            sb.append(thesisSupervisorDegree);
+        }
+        if (thesisSupervisorTitle != null && !thesisSupervisorTitle.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(", ");
+            sb.append(thesisSupervisorTitle);
         }
         return sb.toString();
     }

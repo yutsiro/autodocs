@@ -208,5 +208,27 @@
     "practiceTypeNominative" : "Производственная практика (научно-исследовательская работа)",
     "practiceTypeGenitive" : "производственной практики (научно-исследовательской работы)",
     "sheetNumber" : 7
+  }, {
+    "code" : "20",
+    "type" : "THESIS_PRE_DEFENSE",
+    "course" : 4,
+    "semester" : 4,
+    "educationalProfile" : "Информатика и вычислительная техника",
+    "educationalProfileShort" : "ИВТ",
+    "degreeLevel" : "бакалавриат",
+    "practiceTypeNominative" : "",
+    "practiceTypeGenitive" : "",
+    "sheetNumber" : 0
+  }, {
+    "code" : "21",
+    "type" : "THESIS_PRE_DEFENSE",
+    "course" : 2,
+    "semester" : 8,
+    "educationalProfile" : "Информатика и вычислительная техника",
+    "educationalProfileShort" : "ИВТ",
+    "degreeLevel" : "магистратура",
+    "practiceTypeNominative" : "",
+    "practiceTypeGenitive" : "",
+    "sheetNumber" : 0
   }]
 }

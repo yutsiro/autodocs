@@ -429,14 +429,18 @@ public class ProtocolGeneratorPanel extends Panel {
 
     private void addQuestionsToPanel(List<QuestionConfigItem> questions, boolean isNotRelevant) {
         for (QuestionConfigItem q : questions) {
-            String description = String.format("%s %s - %s - %s семестр - %s",
-                    getCourseText(q.getCourse()),
-                    getDegreeLevelText(q),
-                    q.getEducationalProfileShort(),
-                    q.getSemester(),
-                    q.getPracticeTypeNominative());
+            StringBuilder description = new StringBuilder();
+            description.append(getCourseText(q.getCourse()));
+            description.append(" ").append(getDegreeLevelText(q));
+            if (q.getEducationalProfileShort() != null && !q.getEducationalProfileShort().isEmpty()) {
+                description.append(" - ").append(q.getEducationalProfileShort());
+            }
+            description.append(" - ").append(q.getSemester());
+            if (q.getPracticeTypeNominative() != null && !q.getPracticeTypeNominative().isEmpty()) {
+                description.append(" - ").append(q.getPracticeTypeNominative());
+            }
 
-            JCheckBox checkBox = new JCheckBox(description);
+            JCheckBox checkBox = new JCheckBox(description.toString());
             checkBox.setFont(FontLoader.loadFont(FontType.ADWAITA_SANS_REGULAR, textSize + 1));
             checkBox.setBackground(backgroundColor);
             checkBox.setOpaque(false);

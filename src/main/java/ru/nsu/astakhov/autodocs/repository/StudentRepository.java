@@ -13,4 +13,5 @@ import java.util.Optional;
 public interface StudentRepository extends JpaRepository<StudentEntity, Long> {
     Optional<StudentEntity> findByFullName(String fullName);
     List<StudentEntity> findByCourseAndSpecialization(Course course, Specialization specialization);
+    List<StudentEntity> findByCourse(Course course);
 }

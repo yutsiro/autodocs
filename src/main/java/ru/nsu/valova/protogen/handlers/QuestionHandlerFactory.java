@@ -21,6 +21,8 @@ public class QuestionHandlerFactory {
             return new PracticeEvaluationHandler(config, students);
         } else if (config.getType() == QuestionType.INTERNSHIP_PLACEMENT) {
             return new InternshipPlacementHandler(config, students, academicYear);
+        } else if (config.getType() == QuestionType.THESIS_PRE_DEFENSE) {
+            return new ThesisPreDefenseHandler(config, students);
         }
         throw new IllegalArgumentException("Unknown question type: " + config.getType());
     }
