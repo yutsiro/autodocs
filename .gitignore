@@ -45,4 +45,3 @@ build/
 /scripts
 /testdata/generatedprotocols/protocol_*
 /out/
-/src/main/resources/settings.json
