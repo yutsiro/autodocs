@@ -234,6 +234,10 @@ public class Student {
     public String getFullThesisSupervisor() {
         StringBuilder sb = new StringBuilder();
         if (thesisSupervisorFullName != null && !thesisSupervisorFullName.isEmpty()) sb.append(thesisSupervisorFullName);
+        if (thesisSupervisorDegree != null && !thesisSupervisorDegree.isEmpty()) {
+            if (!sb.isEmpty()) sb.append(", ");
+            sb.append(thesisSupervisorDegree);
+        }
         if (thesisSupervisorPosition != null && !thesisSupervisorPosition.isEmpty()) {
             if (!sb.isEmpty()) sb.append(", ");
             sb.append(thesisSupervisorPosition);
@@ -241,14 +245,6 @@ public class Student {
         if (thesisSupervisorJobPlace != null && !thesisSupervisorJobPlace.isEmpty()) {
             if (!sb.isEmpty()) sb.append(" ");
             sb.append(thesisSupervisorJobPlace);
-        }
-        if (thesisSupervisorDegree != null && !thesisSupervisorDegree.isEmpty()) {
-            if (!sb.isEmpty()) sb.append(", ");
-            sb.append(thesisSupervisorDegree);
-        }
-        if (thesisSupervisorTitle != null && !thesisSupervisorTitle.isEmpty()) {
-            if (!sb.isEmpty()) sb.append(", ");
-            sb.append(thesisSupervisorTitle);
         }
         return sb.toString();
     }
